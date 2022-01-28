@@ -18,26 +18,29 @@ public class MarkdownParse {
             //System.out.println(nextOpenBracket);
             if(nextOpenBracket != -1){
                 int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
+                if(nextCloseBracket == -1){return toReturn;}
                 //System.out.println(nextCloseBracket);
                 int openParen = markdown.indexOf("(", nextCloseBracket);
                 //System.out.println(openParen);
-                int closeParen = markdown.indexOf(")", openParen);
-                //System.out.println(closeParen);
-                System.out.println(markdown.substring(openParen + 1, closeParen));
-                toReturn.add(markdown.substring(openParen + 1, closeParen));
-                currentIndex = closeParen + 1;
+                if(openParen != -1){
+                    int closeParen = markdown.indexOf(")", openParen);
+                    //System.out.println(closeParen);
+                    System.out.println(markdown.substring(openParen + 1, closeParen));
+                    toReturn.add(markdown.substring(openParen + 1, closeParen));
+                    currentIndex = closeParen + 1;
+                }else{currentIndex= nextCloseBracket;}
                 //System.out.println("CurrentIndex:" + currentIndex);
                 //loopcount= loopcount+1;
             } else {currentIndex =  markdown.length()+1;}
             
         }
-        System.out.println(toReturn);
+        //System.out.println(toReturn);
         return toReturn;
     }
     public static void main(String[] args) throws IOException {
 		Path fileName = Path.of(args[0]);
 	    String contents = Files.readString(fileName);
         ArrayList<String> links = getLinks(contents);
-        //System.out.println(links);
+        System.out.println(links);
     }
 }
